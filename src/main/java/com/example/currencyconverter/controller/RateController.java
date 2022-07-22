@@ -1,9 +1,10 @@
 package com.example.currencyconverter.controller;
 
+import com.example.currencyconverter.model.dto.MessageDto;
 import com.example.currencyconverter.model.dto.RateDto;
 import com.example.currencyconverter.model.entity.Rate;
 import com.example.currencyconverter.model.entity.enums.RateType;
-import com.example.currencyconverter.service.converterServiceImpl.RateService;
+import com.example.currencyconverter.service.RateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RequestMapping(path = "/rates/")
 @RequiredArgsConstructor
@@ -62,8 +62,18 @@ public class RateController {
         return new ResponseEntity<>(rateService.findAllRates(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "all/rates")
-    public ResponseEntity<List<RateDto>> updateListOfRates(@RequestBody List<Rate> rates) {
+    @PutMapping(path = "list")
+    public ResponseEntity<Boolean> updateListOfRates(@RequestBody List<Rate> rates) {
         return new ResponseEntity<>(rateService.updateListOfRates(rates), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "update")
+    public ResponseEntity<MessageDto> updateListOfRatesModify(@RequestBody List<Rate> rates) {
+        return new ResponseEntity<>(rateService.updateListOfRatesModify(rates), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "create/conversion")
+    public ResponseEntity<RateDto> createConversionRate(@RequestBody Rate rate){
+        return new ResponseEntity<>(rateService.createConversionRate(rate), HttpStatus.CREATED);
     }
 }

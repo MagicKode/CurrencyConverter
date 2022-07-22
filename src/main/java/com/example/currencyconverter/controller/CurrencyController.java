@@ -2,7 +2,7 @@ package com.example.currencyconverter.controller;
 
 import com.example.currencyconverter.model.dto.CurrencyDto;
 import com.example.currencyconverter.model.entity.Currency;
-import com.example.currencyconverter.service.converterServiceImpl.CurrencyService;
+import com.example.currencyconverter.service.CurrencyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -28,9 +28,8 @@ public class CurrencyController {
         this.currencyService = currencyService;
     }
 
-
     @PostMapping
-    public ResponseEntity<CurrencyDto> create(@RequestBody Currency currency) {
+    public ResponseEntity<CurrencyDto> create(@Valid @RequestBody Currency currency) {
         return new ResponseEntity<>(currencyService.create(currency), HttpStatus.CREATED);
     }
 

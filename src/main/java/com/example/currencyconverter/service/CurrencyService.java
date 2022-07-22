@@ -1,4 +1,4 @@
-package com.example.currencyconverter.service.converterServiceImpl;
+package com.example.currencyconverter.service;
 
 import com.example.currencyconverter.model.dto.CurrencyDto;
 import com.example.currencyconverter.model.entity.Currency;

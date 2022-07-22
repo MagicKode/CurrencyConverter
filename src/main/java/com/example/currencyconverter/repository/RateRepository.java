@@ -31,9 +31,15 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
             "or r.currencyTo.title = :title")
     List<Rate> findAllConversionRatesByTitle(RateType rateType, String title);
 
+    @Query(value = "select r from Rate r where r.id in :idList")
+    List<Rate> getListOfRatesByIds(List<Long> idList);
+
     @Query(value = "select r " +
             "from Rate r " +
-            "where r.currencyFrom = :titleFrom " +
-            "and r.currencyTo = :titleTo")
-    List<Rate> findListOfRatesByTitle(String titleFrom, String titleTo);
+            "where r.id = :id")
+    Rate findRateById(Long id);
+
+    @Query("select r from Rate r " +
+            "where r.currencyFrom.title = :titleCurrencyFrom and r.currencyTo.title = :titleCurrencyTo")
+    Rate findByTitleCurrencyFromAndTitleCurrencyTo(String titleCurrencyFrom, String titleCurrencyTo);
 }

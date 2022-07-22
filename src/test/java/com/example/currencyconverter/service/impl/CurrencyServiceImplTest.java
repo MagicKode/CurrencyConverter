@@ -1,4 +1,4 @@
-package com.example.currencyconverter.service.converterServiceImpl.impl;
+package com.example.currencyconverter.service.impl;
 
 import com.example.currencyconverter.exception.NotFoundException;
 import com.example.currencyconverter.exception.WrongAmountException;

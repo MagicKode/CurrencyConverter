@@ -1,4 +1,4 @@
-package com.example.currencyconverter.service.converterServiceImpl.impl;
+package com.example.currencyconverter.service.impl;
 
 import com.example.currencyconverter.exception.NotFoundException;
 import com.example.currencyconverter.exception.WrongAmountException;
@@ -7,7 +7,7 @@ import com.example.currencyconverter.model.dto.CurrencyDto;
 import com.example.currencyconverter.model.entity.Currency;
 import com.example.currencyconverter.model.entity.Rate;
 import com.example.currencyconverter.repository.CurrencyRepository;
-import com.example.currencyconverter.service.converterServiceImpl.CurrencyService;
+import com.example.currencyconverter.service.CurrencyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         if (rateByTitle == null) {
             throw new NotFoundException("No such rate " + titleFrom + "/" + titleTo + " exist!");
         } else if (rateByTitle.getRateValue() == null) {
-            throw new WrongAmountException("Such rate" + titleFrom + "/" + titleTo + "is Unavailable");
+            throw new WrongAmountException("Such rate " + titleFrom + "/" + titleTo + " is Unavailable");
         }
         return quantityFrom * rateByTitle.getRateValue();
     }
