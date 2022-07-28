@@ -72,7 +72,7 @@ class RateServiceImplTest {
 
         Rate rateFromDB = new Rate();
         rateFromDB.setId(1L);
-        rateFromDB.setRateValue(2);
+        rateFromDB.setRateValue(2.1);
         rateFromDB.setCurrencyTo(currencyFromDB);
         rateFromDB.setCurrencyFrom(currencyFromDB1);
         rateFromDB.setRateType(RateType.SELLING_RATE);
@@ -89,7 +89,6 @@ class RateServiceImplTest {
         verify(rateRepository, times(1)).findById(rateFromDB.getId());
         verify(rateRepository, times(1)).save(rateFromDB);
         verify(rateMapper, times(1)).toRateDto(rateFromDB);
-
     }
 
     @Test
@@ -180,12 +179,12 @@ class RateServiceImplTest {
         MessageDto expectedResult = new MessageDto("everything were updated");
         Rate rateFromDB = new Rate();  //присваиваем значения курсу из бд
         rateFromDB.setId(1L);
-        rateFromDB.setRateValue(2);
+        rateFromDB.setRateValue(2.1);
         List<Rate> ratesFromDb = Collections.singletonList(rateFromDB); // список курсов из бд
 
         Rate rateUpdate = new Rate();  //присваиваем значения новому курсу
         rateUpdate.setId(1L);
-        rateUpdate.setRateValue(5);
+        rateUpdate.setRateValue(5.1);
         List<Rate> ratesUpdate = Collections.singletonList(rateUpdate); // внешний список новых курсов
         List<Long> idList = ratesUpdate.stream().map(Rate::getId).collect(Collectors.toList()); // id  берём из Внешнего списка курсов, требуемых обновления
         when(rateRepository.getListOfRatesByIds(idList)).thenReturn(ratesFromDb); // достаём список курсов из БД
@@ -203,15 +202,15 @@ class RateServiceImplTest {
         //given
         Rate rateFromDB2 = new Rate();
         rateFromDB2.setId(2L);
-        rateFromDB2.setRateValue(3);
+        rateFromDB2.setRateValue(3.1);
         List<Rate> ratesFromDb = Collections.singletonList(rateFromDB2);
 
         Rate rateUpdate1 = new Rate();
         rateUpdate1.setId(2L);
-        rateUpdate1.setRateValue(5);
+        rateUpdate1.setRateValue(5.1);
         Rate rateUpdate2 = new Rate();
         rateUpdate2.setId(3L);
-        rateUpdate2.setRateValue(5);
+        rateUpdate2.setRateValue(5.1);
         List<Rate> ratesUpdate = Arrays.asList(rateUpdate1, rateUpdate2);
         List<Long> idList = ratesUpdate.stream().map(Rate::getId).collect(Collectors.toList());
         when(rateRepository.getListOfRatesByIds(idList)).thenReturn(ratesFromDb);
@@ -232,7 +231,7 @@ class RateServiceImplTest {
         //given
         Rate updateRate = new Rate();
         updateRate.setId(1L);
-        updateRate.setRateValue(2);
+        updateRate.setRateValue(2.1);
         List<Rate> updatedRates = Collections.singletonList(updateRate);
         List<Rate> ratesFromDb = new ArrayList<>();
         List<Long> idList = updatedRates.stream().map(Rate::getId).collect(Collectors.toList());

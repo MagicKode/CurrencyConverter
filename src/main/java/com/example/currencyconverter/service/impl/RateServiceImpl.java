@@ -135,16 +135,3 @@ public class RateServiceImpl implements RateService {
         return create(newConversionRate);
     }
 }
-
-
-//workFlow:
-//1. Достаём все Rate из бд
-//2. Проходимся по всему списку
-//3. Условия:
-// 3,1. Если Rate == null, то кидаем NotFoundException и message()
-// 3.2. Если Rate.getCurrencyFrom == null || Rate.getCurrencyTo == null, то сообщение , что currency нет в бд
-// 3,3. Если newRate.getCurrFrom.getTitle.equals 'BYN', то  сообщение , что c BYN нельзя создавать курс.
-
-
-
-

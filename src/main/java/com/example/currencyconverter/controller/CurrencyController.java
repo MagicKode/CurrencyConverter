@@ -21,7 +21,6 @@ import java.util.Set;
 @RequestMapping(path = "/currencies/")
 @RestController
 public class CurrencyController {
-
     private final CurrencyService currencyService;
 
     public CurrencyController(CurrencyService currencyService) {
@@ -50,7 +49,7 @@ public class CurrencyController {
     }
 
     @PostMapping(path = "convert")
-    public ResponseEntity<Integer> convert(
+    public ResponseEntity<Double> convert(
             @RequestParam String titleFrom,
             @RequestParam Integer amount,
             @RequestParam String titleTo

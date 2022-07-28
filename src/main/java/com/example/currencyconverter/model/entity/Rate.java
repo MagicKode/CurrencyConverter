@@ -2,6 +2,7 @@ package com.example.currencyconverter.model.entity;
 
 import com.example.currencyconverter.model.entity.enums.RateType;
 import com.example.currencyconverter.service.converter.RateValueConverter;
+import com.example.currencyconverter.validation.annotations.RateValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -18,22 +19,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @RequiredArgsConstructor
 @Setter
 @Getter
 @Entity
 @Table(name = "rate")
-public class Rate extends DateAudit {
+public class Rate extends DateAudit{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rate_id")
     private Long id;
+
     @Column(name = "rate_value")
     @Convert(converter = RateValueConverter.class)
-    @NotNull
-    private Integer rateValue;
+    @RateValue
+    private Double rateValue;
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "rate_type")
     private RateType rateType;

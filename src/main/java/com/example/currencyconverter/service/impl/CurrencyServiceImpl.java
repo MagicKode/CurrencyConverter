@@ -61,7 +61,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public Integer convertFromTo(String titleFrom, Integer quantityFrom, String titleTo) {
+    public Double convertFromTo(String titleFrom, Integer quantityFrom, String titleTo) {
         Rate rateByTitle = currencyRepository.findRateByTitle(titleFrom, titleTo);
         if (rateByTitle == null) {
             throw new NotFoundException("No such rate " + titleFrom + "/" + titleTo + " exist!");

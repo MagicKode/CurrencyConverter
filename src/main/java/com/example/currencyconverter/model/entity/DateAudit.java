@@ -1,6 +1,5 @@
 package com.example.currencyconverter.model.entity;
 
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -22,4 +21,3 @@ public abstract class DateAudit implements Serializable {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }
-

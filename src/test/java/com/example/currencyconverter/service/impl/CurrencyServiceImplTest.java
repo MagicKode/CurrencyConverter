@@ -98,10 +98,10 @@ class CurrencyServiceImplTest {
         Rate rate = new Rate();
         rate.setCurrencyFrom(currencyFrom);
         rate.setCurrencyTo(currencyTo);
-        rate.setRateValue(2);
+        rate.setRateValue(2D);
         when(currencyRepository.findRateByTitle(titleFrom, titleTo)).thenReturn(rate);
         //when
-        Integer result = testSubject.convertFromTo(titleFrom, quantityFrom, titleTo);
+        Double result = testSubject.convertFromTo(titleFrom, quantityFrom, titleTo);
         //then
         Assertions.assertNotNull(result);
         verify(currencyRepository, times(1)).findRateByTitle(titleFrom, titleTo);
@@ -144,7 +144,7 @@ class CurrencyServiceImplTest {
         Rate rate = new Rate();
         rate.setCurrencyFrom(currencyFrom);
         rate.setCurrencyTo(currencyTo);
-        rate.setRateValue(quantityFrom);
+        rate.setRateValue(null);
         String errorMessage = "Such rate" + titleFrom + "/" + titleTo + "is Unavailable";
         when(currencyRepository.findRateByTitle(titleFrom, titleTo)).thenReturn(rate);
         //when

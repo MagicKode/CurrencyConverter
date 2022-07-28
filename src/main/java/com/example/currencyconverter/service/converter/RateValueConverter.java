@@ -7,7 +7,7 @@ import javax.persistence.Converter;
 public class RateValueConverter implements AttributeConverter<Double, Integer> {
     @Override
     public Integer convertToDatabaseColumn(Double attribute) {
-        return (Integer) (int) (Math.ceil(attribute * 100));
+        return (int) (Math.ceil(attribute * 100));
     }
 
     @Override

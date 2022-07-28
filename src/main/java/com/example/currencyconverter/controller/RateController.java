@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping(path = "/rates/")
 @RequiredArgsConstructor
 @RestController
 public class RateController {
-
     private final RateService rateService;
 
     @PostMapping
-    public ResponseEntity<RateDto> create(@RequestBody Rate rate) {
+    public ResponseEntity<RateDto> create(@Valid @RequestBody Rate rate) {
         return new ResponseEntity<>(rateService.create(rate), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<RateDto> update(@RequestBody Rate rate) {
+    public ResponseEntity<RateDto> update(@Valid @RequestBody Rate rate) {
         return new ResponseEntity<>(rateService.update(rate), HttpStatus.OK);
     }
 
@@ -63,17 +63,17 @@ public class RateController {
     }
 
     @PutMapping(path = "list")
-    public ResponseEntity<Boolean> updateListOfRates(@RequestBody List<Rate> rates) {
+    public ResponseEntity<Boolean> updateListOfRates(@Valid @RequestBody List<Rate> rates) {
         return new ResponseEntity<>(rateService.updateListOfRates(rates), HttpStatus.OK);
     }
 
     @PutMapping(path = "update")
-    public ResponseEntity<MessageDto> updateListOfRatesModify(@RequestBody List<Rate> rates) {
+    public ResponseEntity<MessageDto> updateListOfRatesModify(@Valid @RequestBody List<Rate> rates) {
         return new ResponseEntity<>(rateService.updateListOfRatesModify(rates), HttpStatus.OK);
     }
 
     @PostMapping(path = "create/conversion")
-    public ResponseEntity<RateDto> createConversionRate(@RequestBody Rate rate){
+    public ResponseEntity<RateDto> createConversionRate(@Valid @RequestBody Rate rate){
         return new ResponseEntity<>(rateService.createConversionRate(rate), HttpStatus.CREATED);
     }
 }

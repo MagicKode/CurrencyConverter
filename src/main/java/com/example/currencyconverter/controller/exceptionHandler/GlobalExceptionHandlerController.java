@@ -3,19 +3,17 @@ package com.example.currencyconverter.controller.exceptionHandler;
 import com.example.currencyconverter.exception.NotFoundException;
 import com.example.currencyconverter.exception.SuchElementIsExistException;
 import com.example.currencyconverter.exception.WrongAmountException;
-import com.example.currencyconverter.model.entity.Currency;
 import com.example.currencyconverter.service.impl.CurrencyServiceImpl;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandlerController {
@@ -43,13 +41,9 @@ public class GlobalExceptionHandlerController {
     public ResponseEntity<String> handleValidationExceptions(
             MethodArgumentNotValidException methodArgumentNotValidException
     ) {
-        /*Map<String, String> errors = new HashMap<>();
-        methodArgumentNotValidException.getBindingResult().getAllErrors().forEach((error) -> {
-            String title = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(title, errorMessage);
-        });*/
-        logger.log(Level.SEVERE, methodArgumentNotValidException.getMessage(), methodArgumentNotValidException);
-        return new ResponseEntity<>(methodArgumentNotValidException.getMessage(), HttpStatus.BAD_REQUEST);
+        String messages = methodArgumentNotValidException.getBindingResult().getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining("; "));
+        return new ResponseEntity<>(messages, HttpStatus.BAD_REQUEST);
     }
 }

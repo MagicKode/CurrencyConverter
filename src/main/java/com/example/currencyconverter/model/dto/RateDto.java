@@ -9,5 +9,5 @@ import lombok.Setter;
 @Setter
 public class RateDto {
     private Long id;
-    private Integer rateValue;
+    private Double rateValue;
 }

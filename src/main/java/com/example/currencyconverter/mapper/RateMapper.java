@@ -1,6 +1,5 @@
 package com.example.currencyconverter.mapper;
 
-
 import com.example.currencyconverter.model.dto.RateDto;
 import com.example.currencyconverter.model.entity.Rate;
 import org.mapstruct.Mapper;

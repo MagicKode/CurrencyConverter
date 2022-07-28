@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface CurrencyService {
     CurrencyDto create(Currency currency);
-    Integer convertFromTo(String titleFrom, Integer quantityFrom, String titleTo);
+    Double convertFromTo(String titleFrom, Integer quantityFrom, String titleTo);
 
     void deleteByTitle(String title);
 

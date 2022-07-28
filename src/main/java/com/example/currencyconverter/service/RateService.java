@@ -8,7 +8,6 @@ import com.example.currencyconverter.model.entity.enums.RateType;
 import java.util.List;
 
 public interface RateService {
-
     RateDto create(Rate rate);
     RateDto update(Rate rate);
     RateDto createConversionRate(Rate rate);

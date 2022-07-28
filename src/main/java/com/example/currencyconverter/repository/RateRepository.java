@@ -1,6 +1,5 @@
 package com.example.currencyconverter.repository;
 
-import com.example.currencyconverter.model.entity.Currency;
 import com.example.currencyconverter.model.entity.Rate;
 import com.example.currencyconverter.model.entity.enums.RateType;
 import org.springframework.data.jpa.repository.JpaRepository;

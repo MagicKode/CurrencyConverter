@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RateValueConverterTest {
-
     @InjectMocks
     RateValueConverter testSubject;
 
@@ -22,7 +21,6 @@ class RateValueConverterTest {
         //then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(expectedValue, result);
-
     }
 
     @Test
@@ -34,6 +32,5 @@ class RateValueConverterTest {
         Double result = testSubject.convertToEntityAttribute(value);
         //then
         Assertions.assertEquals(expectedValue, result);
-
     }
 }

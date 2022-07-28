@@ -1,5 +1,6 @@
 package com.example.currencyconverter.model.entity;
 
+import com.example.currencyconverter.validation.annotations.CurrencyTitle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,9 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @RequiredArgsConstructor
 @Setter
@@ -25,6 +23,7 @@ public class Currency {
     @Column(name = "currency_id")
     private Long id;
     @Column(name = "currency_title")
+    @CurrencyTitle
     private String title;
     @Column(name = "currency_meaning")
     private String meaning;
