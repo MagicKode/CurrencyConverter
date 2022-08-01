@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = "11"
 
 configurations {
     compileOnly {
@@ -25,7 +25,7 @@ compileJava {
 }
 
 ext {
-    mapstructVersion = "1.5.0.RC1"
+    mapstructVersion = '1.5.1.Final'
 }
 
 dependencies {
@@ -34,7 +34,8 @@ dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.flywaydb:flyway-core:8.5.10'
+    implementation 'org.flywaydb:flyway-core:8.5.12'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
@@ -51,3 +52,4 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_11

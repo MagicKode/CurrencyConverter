@@ -177,17 +177,17 @@ class RateServiceImplTest {
     void shouldUpdateListOfRates() {
         //given
         MessageDto expectedResult = new MessageDto("everything were updated");
-        Rate rateFromDB = new Rate();  //присваиваем значения курсу из бд
+        Rate rateFromDB = new Rate();
         rateFromDB.setId(1L);
         rateFromDB.setRateValue(2.1);
-        List<Rate> ratesFromDb = Collections.singletonList(rateFromDB); // список курсов из бд
+        List<Rate> ratesFromDb = Collections.singletonList(rateFromDB);
 
-        Rate rateUpdate = new Rate();  //присваиваем значения новому курсу
+        Rate rateUpdate = new Rate();
         rateUpdate.setId(1L);
         rateUpdate.setRateValue(5.1);
-        List<Rate> ratesUpdate = Collections.singletonList(rateUpdate); // внешний список новых курсов
-        List<Long> idList = ratesUpdate.stream().map(Rate::getId).collect(Collectors.toList()); // id  берём из Внешнего списка курсов, требуемых обновления
-        when(rateRepository.getListOfRatesByIds(idList)).thenReturn(ratesFromDb); // достаём список курсов из БД
+        List<Rate> ratesUpdate = Collections.singletonList(rateUpdate);
+        List<Long> idList = ratesUpdate.stream().map(Rate::getId).collect(Collectors.toList());
+        when(rateRepository.getListOfRatesByIds(idList)).thenReturn(ratesFromDb);
         when(rateRepository.save(rateFromDB)).thenReturn(rateFromDB);
         //when
         MessageDto result = testSubject.updateListOfRatesModify(ratesUpdate);

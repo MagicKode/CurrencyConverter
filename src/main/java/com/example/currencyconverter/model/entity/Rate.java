@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "rate")
-public class Rate extends DateAudit{
+public class Rate extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rate_id")
