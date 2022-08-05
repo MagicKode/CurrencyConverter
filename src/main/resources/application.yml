@@ -16,5 +16,3 @@ spring:
     open-in-view: false
     generate-ddl: off
     database: postgresql
-
-webSite.url: https://belarusbank.by/api/kursExchange?city=%D0%93%D0%BE%D0%BC%D0%B5%D0%BB%D1%8C

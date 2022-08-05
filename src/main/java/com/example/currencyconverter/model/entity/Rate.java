@@ -47,4 +47,15 @@ public class Rate extends DateAudit {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_currency_to")
     private Currency currencyTo;
+
+    @Override
+    public String toString() {
+        return "Rate{" +
+                currencyFrom.getTitle() +
+                "_" +
+                currencyTo.getTitle() +
+                "_" +
+                rateValue +
+                '}';
+    }
 }
