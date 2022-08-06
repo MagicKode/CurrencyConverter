@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "rate")
-public class Rate extends DateAudit{
+public class Rate extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rate_id")
@@ -47,4 +47,15 @@ public class Rate extends DateAudit{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_currency_to")
     private Currency currencyTo;
+
+    @Override
+    public String toString() {
+        return "Rate{" +
+                currencyFrom.getTitle() +
+                "_" +
+                currencyTo.getTitle() +
+                "_" +
+                rateValue +
+                '}';
+    }
 }

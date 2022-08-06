@@ -9,12 +9,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
 @Constraint(validatedBy = RateValueValidator.class)
-@Target({FIELD, PARAMETER})
+@Target(FIELD)
 @Retention(RUNTIME)
 public @interface RateValue {
     String message() default "Invalid Rate Value";

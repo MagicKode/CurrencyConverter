@@ -62,18 +62,13 @@ public class RateController {
         return new ResponseEntity<>(rateService.findAllRates(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "list")
-    public ResponseEntity<Boolean> updateListOfRates(@Valid @RequestBody List<Rate> rates) {
-        return new ResponseEntity<>(rateService.updateListOfRates(rates), HttpStatus.OK);
-    }
-
     @PutMapping(path = "update")
     public ResponseEntity<MessageDto> updateListOfRatesModify(@Valid @RequestBody List<Rate> rates) {
         return new ResponseEntity<>(rateService.updateListOfRatesModify(rates), HttpStatus.OK);
     }
 
     @PostMapping(path = "create/conversion")
-    public ResponseEntity<RateDto> createConversionRate(@Valid @RequestBody Rate rate){
+    public ResponseEntity<RateDto> createConversionRate(@Valid @RequestBody Rate rate) {
         return new ResponseEntity<>(rateService.createConversionRate(rate), HttpStatus.CREATED);
     }
 }
