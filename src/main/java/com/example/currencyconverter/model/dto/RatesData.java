@@ -1,4 +1,4 @@
-package com.example.currencyconverter.client;
+package com.example.currencyconverter.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

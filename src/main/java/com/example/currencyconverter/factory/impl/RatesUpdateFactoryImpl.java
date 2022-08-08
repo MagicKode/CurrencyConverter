@@ -1,5 +1,7 @@
-package com.example.currencyconverter.client;
+package com.example.currencyconverter.factory.impl;
 
+import com.example.currencyconverter.client.RateExchangeClient;
+import com.example.currencyconverter.factory.RatesUpdateFactory;
 import com.example.currencyconverter.model.entity.Rate;
 import com.example.currencyconverter.repository.RateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class RatesUpdateService {
+public class RatesUpdateFactoryImpl implements RatesUpdateFactory {
     private final RateExchangeClient rateExchangeClient;
     private final RateRepository rateRepository;
 
     @Autowired
-    public RatesUpdateService(RateExchangeClient rateExchangeClient, RateRepository rateRepository) {
+    public RatesUpdateFactoryImpl(RateExchangeClient rateExchangeClient, RateRepository rateRepository) {
         this.rateExchangeClient = rateExchangeClient;
         this.rateRepository = rateRepository;
     }
@@ -49,36 +51,3 @@ public class RatesUpdateService {
         }
     }
 }
-
-
- /* mapFromJSON.forEach((key, value) -> {
-            String[] s = key.split("_");
-            String titleFrom;
-            String titleTo;
-            if (s.length == 2) {
-                if ("in".equals(s[1])) {
-                    titleFrom = s[0];
-                    titleTo = "BYN";
-                } else if ("out".equals(s[1])) {
-                    titleFrom = "BYN";
-                    titleTo = s[0];
-                }
-            } else if (s.length == 3) {
-                if ("in".equals(s[2])) {
-                    titleFrom = s[0];
-                    titleTo = s[1];
-                } else if ("out".equals(s[2])) {
-                    titleFrom = s[1];
-                    titleTo = s[0];
-                }
-            }
-            RateRepository rateRepository = new RateRepository();
-            Rate rate = rateRepository.findByTitleCurrencyFromAndTitleCurrencyTo(titleFrom, titleTo);
-            if (rate != null) {
-                rate.setRateValue(value);
-                rateRepository.save(rate);
-            }
-            //get Rate from DB by titleFrom and titleTo
-            //if Rate != null -> update RateValue
-            //rate.setRateValue(value);
-        });*/
