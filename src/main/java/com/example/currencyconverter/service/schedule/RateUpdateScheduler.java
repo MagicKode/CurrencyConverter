@@ -1,21 +1,21 @@
 package com.example.currencyconverter.service.schedule;
 
-import com.example.currencyconverter.factory.impl.RatesUpdateFactoryImpl;
+import com.example.currencyconverter.updater.impl.RatesUpdaterImpl;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Component
 public class RateUpdateScheduler {
-    private final RatesUpdateFactoryImpl ratesUpdateFactoryImpl;
+    private final RatesUpdaterImpl ratesUpdaterImpl;
 
-    public RateUpdateScheduler(RatesUpdateFactoryImpl ratesUpdateFactoryImpl){
-        this.ratesUpdateFactoryImpl = ratesUpdateFactoryImpl;
+    public RateUpdateScheduler(RatesUpdaterImpl ratesUpdaterImpl) {
+        this.ratesUpdaterImpl = ratesUpdaterImpl;
     }
 
     @Scheduled(cron = "${daily.update.time}")
     @Transactional
     public void updateRatesScheduler() {
-        ratesUpdateFactoryImpl.updateRatesByJSON();
+        ratesUpdaterImpl.updateRatesByJSON();
     }
 }

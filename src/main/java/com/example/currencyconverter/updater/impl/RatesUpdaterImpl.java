@@ -1,7 +1,7 @@
-package com.example.currencyconverter.factory.impl;
+package com.example.currencyconverter.updater.impl;
 
 import com.example.currencyconverter.client.RateExchangeClient;
-import com.example.currencyconverter.factory.RatesUpdateFactory;
+import com.example.currencyconverter.updater.RatesUpdater;
 import com.example.currencyconverter.model.entity.Rate;
 import com.example.currencyconverter.repository.RateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class RatesUpdateFactoryImpl implements RatesUpdateFactory {
+public class RatesUpdaterImpl implements RatesUpdater {
     private final RateExchangeClient rateExchangeClient;
     private final RateRepository rateRepository;
 
     @Autowired
-    public RatesUpdateFactoryImpl(RateExchangeClient rateExchangeClient, RateRepository rateRepository) {
+    public RatesUpdaterImpl(RateExchangeClient rateExchangeClient, RateRepository rateRepository) {
         this.rateExchangeClient = rateExchangeClient;
         this.rateRepository = rateRepository;
     }

@@ -1,6 +1,6 @@
 package com.example.currencyconverter.client;
 
-import com.example.currencyconverter.factory.impl.RatesUpdateFactoryImpl;
+import com.example.currencyconverter.updater.impl.RatesUpdaterImpl;
 import com.example.currencyconverter.model.entity.Currency;
 import com.example.currencyconverter.model.entity.Rate;
 import com.example.currencyconverter.repository.RateRepository;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class RatesUpdateFactoryImplTest {
+class RatesUpdaterImplTest {
 
     @Mock
     RateExchangeClient rateExchangeClient;
@@ -29,7 +29,7 @@ class RatesUpdateFactoryImplTest {
     RateRepository rateRepository;
 
     @InjectMocks
-    RatesUpdateFactoryImpl testSubject;
+    RatesUpdaterImpl testSubject;
 
     private Currency createCurrency(Long id, String title) {
         Currency currency = new Currency();
