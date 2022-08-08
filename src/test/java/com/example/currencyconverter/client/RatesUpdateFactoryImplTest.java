@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,7 +50,7 @@ class RatesUpdateFactoryImplTest {
     void shouldUpdateRatesByJSONWhenExchangeRateIn() {
         //given
         Currency firstCurrencyFrom = createCurrency(1L, "USD");
-        Currency firstCurrencyTo = createCurrency(3L, "BYN");
+        Currency firstCurrencyTo = createCurrency(4L, "BYN");
         Rate rateOneFromDB = createRate(1L, firstCurrencyFrom, firstCurrencyTo);
         rateOneFromDB.setRateValue(1.23);
         Currency secondCurrencyFrom = createCurrency(2L, "EUR");
@@ -59,8 +60,8 @@ class RatesUpdateFactoryImplTest {
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("USD", 1.23D);
-        mapJson.put("EUR", 2.34D);
+        mapJson.put("USD_in", 3.45D);
+        mapJson.put("EUR_in", 4.56D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -68,6 +69,8 @@ class RatesUpdateFactoryImplTest {
         //when
         testSubject.updateRatesByJSON();
         //then
+        assertEquals(3.45D, rateOneFromDB.getRateValue());
+        assertEquals(4.56D, rateTwoFromDB.getRateValue());
         verify(rateExchangeClient, times(1)).getRatesFromJson();
         verify(rateRepository, times(1)).findAll();
         verify(rateRepository, times(1)).save(rateOneFromDB);
@@ -88,8 +91,8 @@ class RatesUpdateFactoryImplTest {
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("USD", 1.23D);
-        mapJson.put("EUR", 2.34D);
+        mapJson.put("USD_out", 3.45D);
+        mapJson.put("EUR_out", 4.56D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -97,6 +100,8 @@ class RatesUpdateFactoryImplTest {
         //when
         testSubject.updateRatesByJSON();
         //then
+        assertEquals(3.45D, rateOneFromDB.getRateValue());
+        assertEquals(4.56D, rateTwoFromDB.getRateValue());
         verify(rateExchangeClient, times(1)).getRatesFromJson();
         verify(rateRepository, times(1)).findAll();
         verify(rateRepository, times(1)).save(rateOneFromDB);
@@ -110,15 +115,15 @@ class RatesUpdateFactoryImplTest {
         Currency firstCurrencyTo = createCurrency(2L, "EUR");
         Rate rateOneFromDB = createRate(1L, firstCurrencyFrom, firstCurrencyTo);
         rateOneFromDB.setRateValue(1.23);
-        Currency secondCurrencyFrom = createCurrency(2L, "EURO");
+        Currency secondCurrencyFrom = createCurrency(2L, "EUR");
         Currency secondCurrencyTo = createCurrency(4L, "RUB");
         Rate rateTwoFromDB = createRate(2L, secondCurrencyFrom, secondCurrencyTo);
         rateOneFromDB.setRateValue(2.34);
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("USD", 3.45D);
-        mapJson.put("EUR", 4.56D);
+        mapJson.put("USD_EUR_in", 3.45D);
+        mapJson.put("EUR_RUB_in", 4.56D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -126,6 +131,8 @@ class RatesUpdateFactoryImplTest {
         //when
         testSubject.updateRatesByJSON();
         //then
+        assertEquals(3.45D, rateOneFromDB.getRateValue());
+        assertEquals(4.56D, rateTwoFromDB.getRateValue());
         verify(rateExchangeClient, times(1)).getRatesFromJson();
         verify(rateRepository, times(1)).findAll();
         verify(rateRepository, times(1)).save(rateOneFromDB);
@@ -146,8 +153,8 @@ class RatesUpdateFactoryImplTest {
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("EUR", 3.45D);
-        mapJson.put("RUB", 4.56D);
+        mapJson.put("EUR_USD_out", 3.45D);
+        mapJson.put("RUB_EUR_out", 4.56D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -155,6 +162,8 @@ class RatesUpdateFactoryImplTest {
         //when
         testSubject.updateRatesByJSON();
         //then
+        assertEquals(3.45D, rateOneFromDB.getRateValue());
+        assertEquals(4.56D, rateTwoFromDB.getRateValue());
         verify(rateExchangeClient, times(1)).getRatesFromJson();
         verify(rateRepository, times(1)).findAll();
         verify(rateRepository, times(1)).save(rateOneFromDB);
@@ -175,9 +184,9 @@ class RatesUpdateFactoryImplTest {
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("USD", 2.34D);
-        mapJson.put("EUR", 3.45D);
-        mapJson.put("RUB", 4.56D);
+        mapJson.put("USD_in", 2.34D);
+        mapJson.put("EUR_in", 3.45D);
+        mapJson.put("RUB_in", 4.56D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -185,6 +194,8 @@ class RatesUpdateFactoryImplTest {
         //when
         testSubject.updateRatesByJSON();
         //then
+        assertEquals(2.34D, rateOneFromDB.getRateValue());
+        assertEquals(3.45D, rateTwoFromDB.getRateValue());
         verify(rateExchangeClient, times(1)).getRatesFromJson();
         verify(rateRepository, times(1)).findAll();
         verify(rateRepository, times(1)).save(rateOneFromDB);
@@ -201,13 +212,13 @@ class RatesUpdateFactoryImplTest {
         Currency secondCurrencyFrom = createCurrency(2L, "EUR");
         Currency secondCurrencyTo = createCurrency(1L, "USD");
         Rate rateTwoFromDB = createRate(2L, secondCurrencyFrom, secondCurrencyTo);
-        rateOneFromDB.setRateValue(5.67);
+        rateOneFromDB.setRateValue(2.34D);
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("USD", 2.34D);
-        mapJson.put("EUR", 3.45D);
-        mapJson.put("RUB", 4.56D);
+        mapJson.put("USD_RUB_in", 3.45D);
+        mapJson.put("EUR_USD_in", 4.56D);
+        mapJson.put("RUB_USD_out", 5.67D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -215,6 +226,8 @@ class RatesUpdateFactoryImplTest {
         //when
         testSubject.updateRatesByJSON();
         //then
+        assertEquals(3.45D, rateOneFromDB.getRateValue());
+        assertEquals(4.56D, rateTwoFromDB.getRateValue());
         verify(rateExchangeClient, times(1)).getRatesFromJson();
         verify(rateRepository, times(1)).findAll();
         verify(rateRepository, times(1)).save(rateOneFromDB);
@@ -235,7 +248,7 @@ class RatesUpdateFactoryImplTest {
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("RUB", 3.45D);
+        mapJson.put("RUB_in", 3.45D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -243,6 +256,7 @@ class RatesUpdateFactoryImplTest {
         //when
         testSubject.updateRatesByJSON();
         //then
+        assertEquals(3.45D, rateTwoFromDB.getRateValue());
         verify(rateExchangeClient, times(1)).getRatesFromJson();
         verify(rateRepository, times(1)).findAll();
         verify(rateRepository, times(1)).save(rateOneFromDB);
@@ -263,7 +277,7 @@ class RatesUpdateFactoryImplTest {
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("RUB", 3.45D);
+        mapJson.put("RUB_EUR_in", 3.45D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -271,6 +285,7 @@ class RatesUpdateFactoryImplTest {
         //when
         testSubject.updateRatesByJSON();
         //then
+        assertEquals(3.45D, rateTwoFromDB.getRateValue());
         verify(rateExchangeClient, times(1)).getRatesFromJson();
         verify(rateRepository, times(1)).findAll();
         verify(rateRepository, times(1)).save(rateOneFromDB);
@@ -281,7 +296,7 @@ class RatesUpdateFactoryImplTest {
     void shouldNotUpdateDBRatesWhenDBIsEmpty() {
         //given
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("RUB", 3.45D);
+        mapJson.put("RUB_USD_out", 3.45D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         //when
         testSubject.updateRatesByJSON();
