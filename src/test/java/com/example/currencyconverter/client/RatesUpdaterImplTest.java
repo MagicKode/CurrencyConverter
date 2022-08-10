@@ -111,19 +111,17 @@ class RatesUpdaterImplTest {
     @Test
     void shouldUpdateRatesByJSONWhenConversionRateIn() {
         //given
-        Currency firstCurrencyFrom = createCurrency(1L, "USD");
-        Currency firstCurrencyTo = createCurrency(2L, "EUR");
-        Rate rateOneFromDB = createRate(1L, firstCurrencyFrom, firstCurrencyTo);
+        Currency currencyFrom = createCurrency(1L, "USD");
+        Currency currencyTo = createCurrency(2L, "EUR");
+        Rate rateOneFromDB = createRate(1L, currencyFrom, currencyTo);
         rateOneFromDB.setRateValue(1.23);
-        Currency secondCurrencyFrom = createCurrency(2L, "EUR");
-        Currency secondCurrencyTo = createCurrency(4L, "RUB");
-        Rate rateTwoFromDB = createRate(2L, secondCurrencyFrom, secondCurrencyTo);
+        Rate rateTwoFromDB = createRate(2L, currencyTo, currencyFrom);
         rateOneFromDB.setRateValue(2.34);
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
         mapJson.put("USD_EUR_in", 3.45D);
-        mapJson.put("EUR_RUB_in", 4.56D);
+        mapJson.put("EUR_USD_out", 4.56D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -142,19 +140,17 @@ class RatesUpdaterImplTest {
     @Test
     void shouldUpdateRatesByJSONWhenConversionRateOut() {
         //given
-        Currency firstCurrencyFrom = createCurrency(2L, "EUR");
-        Currency firstCurrencyTo = createCurrency(1L, "USD");
-        Rate rateOneFromDB = createRate(1L, firstCurrencyFrom, firstCurrencyTo);
+        Currency currencyFrom = createCurrency(2L, "EUR");
+        Currency currencyTo = createCurrency(1L, "USD");
+        Rate rateOneFromDB = createRate(1L, currencyFrom, currencyTo);
         rateOneFromDB.setRateValue(1.23);
-        Currency secondCurrencyFrom = createCurrency(4L, "RUB");
-        Currency secondCurrencyTo = createCurrency(2L, "EUR");
-        Rate rateTwoFromDB = createRate(2L, secondCurrencyFrom, secondCurrencyTo);
+        Rate rateTwoFromDB = createRate(2L, currencyTo, currencyFrom);
         rateOneFromDB.setRateValue(2.34);
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("EUR_USD_out", 3.45D);
-        mapJson.put("RUB_EUR_out", 4.56D);
+        mapJson.put("USD_EUR_in", 3.45D);
+        mapJson.put("USD_EUR_out", 4.56D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);
@@ -205,13 +201,11 @@ class RatesUpdaterImplTest {
     @Test
     void shouldUpdateRatesByJSONWhenOneOfConversionDBRatesIsNull() {
         //given
-        Currency firstCurrencyFrom = createCurrency(1L, "USD");
-        Currency firstCurrencyTo = createCurrency(4L, "RUB");
-        Rate rateOneFromDB = createRate(1L, firstCurrencyFrom, firstCurrencyTo);
+        Currency currencyFrom = createCurrency(1L, "USD");
+        Currency currencyTo = createCurrency(4L, "RUB");
+        Rate rateOneFromDB = createRate(1L, currencyFrom, currencyTo);
         rateOneFromDB.setRateValue(1.23);
-        Currency secondCurrencyFrom = createCurrency(2L, "EUR");
-        Currency secondCurrencyTo = createCurrency(1L, "USD");
-        Rate rateTwoFromDB = createRate(2L, secondCurrencyFrom, secondCurrencyTo);
+        Rate rateTwoFromDB = createRate(2L, currencyFrom, currencyTo);
         rateOneFromDB.setRateValue(2.34D);
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
@@ -266,18 +260,16 @@ class RatesUpdaterImplTest {
     @Test
     void shouldUpdateDBRatesWhenOneOfJSONConversionRatesIsNull() {
         //given
-        Currency firstCurrencyFrom = createCurrency(2L, "EUR");
-        Currency firstCurrencyTo = createCurrency(1L, "USD");
-        Rate rateOneFromDB = createRate(1L, firstCurrencyFrom, firstCurrencyTo);
+        Currency currencyFrom = createCurrency(2L, "EUR");
+        Currency currencyTo = createCurrency(1L, "USD");
+        Rate rateOneFromDB = createRate(1L, currencyFrom, currencyTo);
         rateOneFromDB.setRateValue(1.23);
-        Currency secondCurrencyFrom = createCurrency(4L, "RUB");
-        Currency secondCurrencyTo = createCurrency(2L, "EUR");
-        Rate rateTwoFromDB = createRate(2L, secondCurrencyFrom, secondCurrencyTo);
+        Rate rateTwoFromDB = createRate(2L, currencyTo, currencyFrom);
         rateOneFromDB.setRateValue(2.34);
         List<Rate> ratesFromDB = Arrays.asList(rateOneFromDB, rateTwoFromDB);
 
         HashMap<String, Double> mapJson = new HashMap<>();
-        mapJson.put("RUB_EUR_in", 3.45D);
+        mapJson.put("EUR_USD_in", 3.45D);
         when(rateExchangeClient.getRatesFromJson()).thenReturn(mapJson);
         when(rateRepository.findAll()).thenReturn(ratesFromDB);
         when(rateRepository.save(rateOneFromDB)).thenReturn(rateOneFromDB);

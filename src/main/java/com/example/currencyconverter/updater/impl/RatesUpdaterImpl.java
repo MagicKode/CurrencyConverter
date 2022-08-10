@@ -35,7 +35,7 @@ public class RatesUpdaterImpl implements RatesUpdater {
                 String conversionTitle = rate.getCurrencyFrom().getTitle() + "_" + rate.getCurrencyTo().getTitle() + "_" + "in";
                 setRateValue(rate, ratesFromJson, conversionTitle);
             }
-            else if (!rate.getCurrencyFrom().getTitle().equals("BYN") && !rate.getCurrencyTo().getTitle().equals("BYN")) {
+            if (!rate.getCurrencyFrom().getTitle().equals("BYN") && !rate.getCurrencyTo().getTitle().equals("BYN")) {
                 String conversionTitle = rate.getCurrencyTo().getTitle() + "_" + rate.getCurrencyFrom().getTitle() + "_" + "out";
                 setRateValue(rate, ratesFromJson, conversionTitle);
             }
