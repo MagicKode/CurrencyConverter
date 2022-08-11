@@ -13,10 +13,4 @@ public class RateClientService {
         this.rateRepository = rateRepository;
         this.rateExchangeClient = rateExchangeClient;
     }
-
-//    public List<RatesFromSiteDto> findAll(){    // обращаемся к сайту, чтобы вернул список курсов
-//        return rateExchangeClient.getRates().stream().map(rateDto -> );
-//    }
-
-
 }
