@@ -19,31 +19,39 @@ import static org.mockito.Mockito.when;
 class AccountServiceImplTest {
     @Mock
     AccountRepository accountRepository;
-
     @Mock
     AccountMapper accountMapper;
 
     @InjectMocks
     AccountServiceImpl testSubject;
 
-    @Test
-    void shouldCreate() {
-        //given
-        String title = "Account";
+    private Account createAccount(Long id, String title, int user_id) {
         Account account = new Account();
-        account.setId(1L);
+        account.setId(id);
         account.setTitle(title);
-        account.setUser_id(1);
+        account.setUser_id(user_id);
+        return account;
+    }
+
+    private AccountDto createAccountDto(Account account) {
         AccountDto accountDto = new AccountDto();
         accountDto.setId(account.getId());
         accountDto.setTitle(account.getTitle());
         accountDto.setUser_id(account.getUser_id());
+        return accountDto;
+    }
+
+    @Test
+    void shouldCreate() {
+        //given
+        Account account = createAccount(1L, "First", 1);
+        AccountDto accountDto = createAccountDto(account);
         when(accountRepository.save(account)).thenReturn(account);
         when(accountMapper.toAccountDto(account)).thenReturn(accountDto);
         //when
         AccountDto result = testSubject.create(account);
         //then
-        Assertions.assertEquals(title, result.getTitle());
+        Assertions.assertEquals(account.getTitle(), result.getTitle());
         verify(accountRepository, times(1)).save(account);
         verify(accountMapper, times(1)).toAccountDto(account);
     }

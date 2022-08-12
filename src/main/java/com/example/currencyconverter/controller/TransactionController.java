@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    public TransactionController(TransactionService transactionService){
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
 
-    @PostMapping
-    public ResponseEntity<TransactionDto> create(@RequestBody Transaction transaction){
-        return new ResponseEntity<>(transactionService.create(transaction), HttpStatus.CREATED);
+    @PostMapping(path = "operation")
+    public ResponseEntity<TransactionDto> operation(@RequestBody Transaction transaction) {
+        return new ResponseEntity<>(transactionService.operations(transaction), HttpStatus.OK);
     }
 }

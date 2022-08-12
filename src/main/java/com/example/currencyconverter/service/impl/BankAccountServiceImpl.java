@@ -18,6 +18,6 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Transactional
     @Override
     public BankAccountDto create(BankAccount bankAccount) {
-        return bankAccountMapper.toCheckDto(bankAccountRepository.save(bankAccount));
+        return bankAccountMapper.toBankAccountDto(bankAccountRepository.save(bankAccount));
     }
 }

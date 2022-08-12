@@ -27,8 +27,8 @@ public class BankAccount {
     private Long id;
     @Column(name = "user_id")
     private int user_id;
-    @Column(name = "currency_id")
-    private Integer currencyId;
+    @Column(name = "currency_title")
+    private String currencyTitle;
     @Column(name = "value")
     private Integer currencyValue;
 

@@ -16,17 +16,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Table(name = "bankTransaction")
+@Table(name = "bank_transaction")
 @RequiredArgsConstructor
 @Setter
 @Getter
 @Entity
-public class Transaction extends DateAudit{
+public class Transaction extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "curr_value")
+    @Column(name = "value")
     private Integer transactionSum;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "operation")

@@ -5,5 +5,5 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface BankAccountMapper {
-    BankAccountDto toCheckDto(com.example.currencyconverter.model.entity.BankAccount bankAccount);
+    BankAccountDto toBankAccountDto(com.example.currencyconverter.model.entity.BankAccount bankAccount);
 }

@@ -45,6 +45,20 @@ class RateServiceImplTest {
     @InjectMocks
     RateServiceImpl testSubject;
 
+    private Currency createCurrency(Long id, String title) {
+        Currency currency = new Currency();
+        currency.setId(id);
+        currency.setTitle(title);
+        return currency;
+    }
+
+    private Rate createRate(Long id, Currency currencyFrom, Currency currencyTo) {
+        Rate rate = new Rate();
+        rate.setId(id);
+        rate.setCurrencyTo(currencyTo);
+        rate.setCurrencyFrom(currencyFrom);
+        return rate;
+    }
     @Test
     void shouldCreate() {
         //given
@@ -243,21 +257,6 @@ class RateServiceImplTest {
         //then
         Assertions.assertEquals(errorMessage, result.getMessage());
         verify(rateRepository, times(1)).getListOfRatesByIds(idList);
-    }
-
-    private Currency createCurrency(Long id, String title) {
-        Currency currency = new Currency();
-        currency.setId(id);
-        currency.setTitle(title);
-        return currency;
-    }
-
-    private Rate createRate(Long id, Currency currencyFrom, Currency currencyTo) {
-        Rate rate = new Rate();
-        rate.setId(id);
-        rate.setCurrencyTo(currencyTo);
-        rate.setCurrencyFrom(currencyFrom);
-        return rate;
     }
 
     @Test
