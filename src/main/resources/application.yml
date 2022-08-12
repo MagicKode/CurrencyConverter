@@ -16,3 +16,5 @@ spring:
     open-in-view: false
     generate-ddl: off
     database: postgresql
+
+daily.update.time: 0 00 10,13,16 ? * MON-SUN
