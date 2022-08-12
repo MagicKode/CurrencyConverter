@@ -145,7 +145,7 @@ class CurrencyServiceImplTest {
         rate.setCurrencyFrom(currencyFrom);
         rate.setCurrencyTo(currencyTo);
         rate.setRateValue(null);
-        String errorMessage = "Such rate" + titleFrom + "/" + titleTo + "is Unavailable";
+        String errorMessage = "Such rate " + titleFrom + "/" + titleTo + " is Unavailable";
         when(currencyRepository.findRateByTitle(titleFrom, titleTo)).thenReturn(rate);
         //when
         WrongAmountException result = Assertions

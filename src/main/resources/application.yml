@@ -18,3 +18,5 @@ spring:
     database: postgresql
 jwt:
   secret: "currencyconverter"
+
+daily.update.time: 0 00 10,13,16 ? * MON-SUN
