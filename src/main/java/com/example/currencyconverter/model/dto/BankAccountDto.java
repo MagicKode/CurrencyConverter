@@ -1,5 +1,6 @@
 package com.example.currencyconverter.model.dto;
 
+import com.example.currencyconverter.model.entity.Currency;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,6 @@ import lombok.Setter;
 @Setter
 public class BankAccountDto {
     private Long id;
-    private String currencyTitle;
+    private Currency currency;
     private Integer value;
 }

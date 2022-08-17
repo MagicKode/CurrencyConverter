@@ -6,6 +6,7 @@ import com.example.currencyconverter.mapper.CurrencyMapper;
 import com.example.currencyconverter.model.dto.CurrencyDto;
 import com.example.currencyconverter.model.entity.Currency;
 import com.example.currencyconverter.model.entity.Rate;
+import com.example.currencyconverter.model.entity.enums.RateType;
 import com.example.currencyconverter.repository.CurrencyRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,21 +27,45 @@ import static org.mockito.Mockito.when;
 class CurrencyServiceImplTest {
     @Mock
     CurrencyRepository currencyRepository;
-
     @Mock
     CurrencyMapper currencyMapper;
-
     @InjectMocks
     CurrencyServiceImpl testSubject;
+
+    private Currency createCurrency(Long id, String title, String meaning, Integer quantity) {
+        Currency currency = new Currency();
+        currency.setId(id);
+        currency.setTitle(title);
+        currency.setMeaning(meaning);
+        currency.setQuantity(quantity);
+        return currency;
+    }
+
+    private CurrencyDto createCurrencyDto(Currency currency) {
+        CurrencyDto currencyDto = new CurrencyDto();
+        currencyDto.setId(currency.getId());
+        currencyDto.setTitle(currency.getTitle());
+        currencyDto.setMeaning(currency.getMeaning());
+        currencyDto.setQuantity(currency.getQuantity());
+        return currencyDto;
+    }
+
+    private Rate createRate(Long id, Double rateValue, RateType rateType, Currency currencyFrom, Currency currencyTo) {
+        Rate rate = new Rate();
+        rate.setId(id);
+        rate.setRateValue(rateValue);
+        rate.setRateType(rateType);
+        rate.setCurrencyFrom(currencyFrom);
+        rate.setCurrencyTo(currencyTo);
+        return rate;
+    }
 
     @Test
     void shouldCreate() {
         //given
         String title = "USD";
-        Currency currency = new Currency();
-        currency.setTitle(title);
-        CurrencyDto currencyDto = new CurrencyDto();
-        currencyDto.setTitle(title);
+        Currency currency = createCurrency(1L, "USD", null, 10);
+        CurrencyDto currencyDto = createCurrencyDto(currency);
         when(currencyRepository.save(currency)).thenReturn(currency);
         when(currencyMapper.toCurrencyDto(currency)).thenReturn(currencyDto);
         //when
@@ -67,13 +92,9 @@ class CurrencyServiceImplTest {
         //given
         String usd = "USD", byn = "BYN";
         String expectedResult = usd + "/" + byn;
-        Currency currencyUSD = new Currency();
-        currencyUSD.setTitle(usd);
-        Currency currencyBYN = new Currency();
-        currencyBYN.setTitle(byn);
-        Rate rate = new Rate();
-        rate.setCurrencyFrom(currencyUSD);
-        rate.setCurrencyTo(currencyBYN);
+        Currency currencyUSD = createCurrency(1L, "USD", null, 10);
+        Currency currencyBYN = createCurrency(1L, "BYN", null, 10);
+        Rate rate = createRate(1L, 2D, RateType.SELLING_RATE, currencyUSD, currencyBYN);
         List<Rate> rates = Collections.singletonList(rate);
         when(currencyRepository.findRates()).thenReturn(rates);
         //when
@@ -91,18 +112,15 @@ class CurrencyServiceImplTest {
         String titleFrom = "USD";
         String titleTo = "RUB";
         Integer quantityFrom = 10;
-        Currency currencyFrom = new Currency();
-        currencyFrom.setTitle(titleFrom);
-        Currency currencyTo = new Currency();
-        currencyTo.setTitle(titleTo);
-        Rate rate = new Rate();
-        rate.setCurrencyFrom(currencyFrom);
-        rate.setCurrencyTo(currencyTo);
-        rate.setRateValue(2D);
+        Currency currencyFrom = createCurrency(1L, "USD", null, 10);
+        Currency currencyTo = createCurrency(2L, "RUB", null, 200);
+        Rate rate = createRate(1L, 2D, RateType.SELLING_RATE, currencyFrom, currencyTo);
         when(currencyRepository.findRateByTitle(titleFrom, titleTo)).thenReturn(rate);
+        Double expectedResult = 1000.0;
         //when
         Double result = testSubject.convertFromTo(titleFrom, quantityFrom, titleTo);
         //then
+        Assertions.assertEquals(expectedResult, result);
         Assertions.assertNotNull(result);
         verify(currencyRepository, times(1)).findRateByTitle(titleFrom, titleTo);
     }
@@ -113,13 +131,6 @@ class CurrencyServiceImplTest {
         String titleFrom = "RUB";
         String titleTo = "EUR";
         Integer quantityFrom = 10;
-        Currency currencyFrom = new Currency();
-        currencyFrom.setTitle(titleFrom);
-        Currency currencyTo = new Currency();
-        currencyTo.setTitle(titleTo);
-        Rate rate = new Rate();
-        rate.setCurrencyFrom(currencyFrom);
-        rate.setCurrencyTo(currencyTo);
         String errorMessage = "No such rate " + titleFrom + "/" + titleTo + " exist!";
         //when
         NotFoundException result = Assertions
@@ -137,14 +148,9 @@ class CurrencyServiceImplTest {
         String titleFrom = "USD";
         String titleTo = "RUB";
         Integer quantityFrom = null;
-        Currency currencyFrom = new Currency();
-        currencyFrom.setTitle(titleFrom);
-        Currency currencyTo = new Currency();
-        currencyTo.setTitle(titleTo);
-        Rate rate = new Rate();
-        rate.setCurrencyFrom(currencyFrom);
-        rate.setCurrencyTo(currencyTo);
-        rate.setRateValue(null);
+        Currency currencyFrom = createCurrency(1L, "RUB", null, 10);
+        Currency currencyTo = createCurrency(2L, "EUR", null, 200);
+        Rate rate = createRate(1L, null, RateType.SELLING_RATE, currencyFrom, currencyTo);
         String errorMessage = "Such rate " + titleFrom + "/" + titleTo + " is Unavailable";
         when(currencyRepository.findRateByTitle(titleFrom, titleTo)).thenReturn(rate);
         //when

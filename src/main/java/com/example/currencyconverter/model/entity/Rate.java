@@ -30,12 +30,10 @@ public class Rate extends DateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rate_id")
     private Long id;
-
     @Column(name = "rate_value")
     @Convert(converter = RateValueConverter.class)
     @RateValue
     private Double rateValue;
-
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "rate_type")
     private RateType rateType;

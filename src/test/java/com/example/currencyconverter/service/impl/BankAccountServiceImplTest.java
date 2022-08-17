@@ -4,6 +4,7 @@ import com.example.currencyconverter.mapper.BankAccountMapper;
 import com.example.currencyconverter.model.dto.BankAccountDto;
 import com.example.currencyconverter.model.entity.Account;
 import com.example.currencyconverter.model.entity.BankAccount;
+import com.example.currencyconverter.model.entity.Currency;
 import com.example.currencyconverter.repository.BankAccountRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,6 @@ class BankAccountServiceImplTest {
     BankAccountRepository bankAccountRepository;
     @Mock
     BankAccountMapper bankAccountMapper;
-
     @InjectMocks
     BankAccountServiceImpl testSubject;
 
@@ -34,11 +34,11 @@ class BankAccountServiceImplTest {
         return account;
     }
 
-    private BankAccount createBankAccount(Long id, String currencyTitle, int user_id, Integer value, Account account) {
+    private BankAccount createBankAccount(Long id, Currency currency, int user_id, Integer value, Account account) {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(id);
         bankAccount.setUser_id(user_id);
-        bankAccount.setCurrencyTitle(currencyTitle);
+        bankAccount.setCurrency(currency);
         bankAccount.setCurrencyValue(value);
         bankAccount.setAccount(account);
         return bankAccount;
@@ -47,7 +47,7 @@ class BankAccountServiceImplTest {
     private BankAccountDto createBankAccountDto(BankAccount bankAccount) {
         BankAccountDto bankAccountDto = new BankAccountDto();
         bankAccountDto.setId(bankAccount.getId());
-        bankAccountDto.setCurrencyTitle(bankAccount.getCurrencyTitle());
+        bankAccountDto.setCurrency(bankAccount.getCurrency());
         bankAccountDto.setValue(bankAccount.getCurrencyValue());
         return bankAccountDto;
     }
@@ -55,15 +55,16 @@ class BankAccountServiceImplTest {
     @Test
     void shouldCreate() {
         //given
+        Currency currency = new Currency();
         Account account = createAccount(1L, "First", 1);
-        BankAccount bankAccount = createBankAccount(1L, "USD", 1, 100, account);
+        BankAccount bankAccount = createBankAccount(1L, currency, 1, 100, account);
         BankAccountDto bankAccountDto = createBankAccountDto(bankAccount);
         when(bankAccountRepository.save(bankAccount)).thenReturn(bankAccount);
         when(bankAccountMapper.toBankAccountDto(bankAccount)).thenReturn(bankAccountDto);
         //when
         BankAccountDto result = testSubject.create(bankAccount);
         //then
-        Assertions.assertEquals(bankAccount.getCurrencyTitle(), result.getCurrencyTitle());
+        Assertions.assertEquals(bankAccount.getCurrency(), result.getCurrency());
         verify(bankAccountRepository, times(1)).save(bankAccount);
         verify(bankAccountMapper, times(1)).toBankAccountDto(bankAccount);
     }

@@ -35,29 +35,38 @@ import static org.mockito.Mockito.when;
 class RateServiceImplTest {
     @Mock
     RateRepository rateRepository;
-
     @Mock
     CurrencyRepository currencyRepository;
-
     @Mock
     RateMapper rateMapper;
-
     @InjectMocks
     RateServiceImpl testSubject;
 
-    private Currency createCurrency(Long id, String title) {
+    private Currency createCurrency(Long id, String title, String meaning, Integer quantity) {
         Currency currency = new Currency();
         currency.setId(id);
         currency.setTitle(title);
+        currency.setMeaning(meaning);
+        currency.setQuantity(quantity);
         return currency;
     }
 
-    private Rate createRate(Long id, Currency currencyFrom, Currency currencyTo) {
+    private Rate createRate(Long id, Currency currencyFrom, Currency currencyTo, RateType rateType, Double rateValue) {
         Rate rate = new Rate();
         rate.setId(id);
         rate.setCurrencyTo(currencyTo);
         rate.setCurrencyFrom(currencyFrom);
+        rate.setRateType(rateType);
+        rate.setRateValue(rateValue);
         return rate;
+    }
+
+    private RateDto createRateDto(Rate rate){
+        RateDto rateDto = new RateDto();
+        rateDto.setId(rate.getId());
+        rateDto.setRateType(rate.getRateType());
+        rateDto.setRateValue(rate.getRateValue());
+        return rateDto;
     }
     @Test
     void shouldCreate() {
@@ -72,27 +81,10 @@ class RateServiceImplTest {
     @Test
     void shouldUpdate() {
         //given
-        Currency currencyFromDB = new Currency();
-        currencyFromDB.setId(1L);
-        currencyFromDB.setTitle("UAH");
-        currencyFromDB.setMeaning("Ukrainian hryvnia");
-        currencyFromDB.setQuantity(100);
-
-        Currency currencyFromDB1 = new Currency();
-        currencyFromDB.setId(1L);
-        currencyFromDB.setTitle("USD");
-        currencyFromDB.setMeaning("American dollar");
-        currencyFromDB.setQuantity(50);
-
-        Rate rateFromDB = new Rate();
-        rateFromDB.setId(1L);
-        rateFromDB.setRateValue(2.1);
-        rateFromDB.setCurrencyTo(currencyFromDB);
-        rateFromDB.setCurrencyFrom(currencyFromDB1);
-        rateFromDB.setRateType(RateType.SELLING_RATE);
-
-        RateDto rateDto = new RateDto();
-        rateDto.setRateValue(rateFromDB.getRateValue());
+        Currency currencyFromDB = createCurrency(1L, "UAH", "Ukrainian hryvnia", 100);
+        Currency currencyFromDB1 = createCurrency(1L, "USD", "American dollar", 50);
+        Rate rateFromDB = createRate(1L, currencyFromDB, currencyFromDB1, RateType.SELLING_RATE, 2.1);
+        RateDto rateDto = createRateDto(rateFromDB);
         when(rateRepository.findById(rateFromDB.getId())).thenReturn(Optional.of(rateFromDB));
         when(rateRepository.save(rateFromDB)).thenReturn(rateFromDB);
         when(rateMapper.toRateDto(rateFromDB)).thenReturn(rateDto);
@@ -191,14 +183,9 @@ class RateServiceImplTest {
     void shouldUpdateListOfRates() {
         //given
         MessageDto expectedResult = new MessageDto("everything were updated");
-        Rate rateFromDB = new Rate();
-        rateFromDB.setId(1L);
-        rateFromDB.setRateValue(2.1);
+        Rate rateFromDB = createRate(1L, null, null, null, 2.1);
         List<Rate> ratesFromDb = Collections.singletonList(rateFromDB);
-
-        Rate rateUpdate = new Rate();
-        rateUpdate.setId(1L);
-        rateUpdate.setRateValue(5.1);
+        Rate rateUpdate = createRate(1L, null, null, null, 5.1);
         List<Rate> ratesUpdate = Collections.singletonList(rateUpdate);
         List<Long> idList = ratesUpdate.stream().map(Rate::getId).collect(Collectors.toList());
         when(rateRepository.getListOfRatesByIds(idList)).thenReturn(ratesFromDb);
@@ -214,17 +201,10 @@ class RateServiceImplTest {
     @Test
     void shouldUpdateListOfRatesButNotAllRates() {
         //given
-        Rate rateFromDB2 = new Rate();
-        rateFromDB2.setId(2L);
-        rateFromDB2.setRateValue(3.1);
+        Rate rateFromDB2 = createRate(2L, null, null, null, 3.1);
         List<Rate> ratesFromDb = Collections.singletonList(rateFromDB2);
-
-        Rate rateUpdate1 = new Rate();
-        rateUpdate1.setId(2L);
-        rateUpdate1.setRateValue(5.1);
-        Rate rateUpdate2 = new Rate();
-        rateUpdate2.setId(3L);
-        rateUpdate2.setRateValue(5.1);
+        Rate rateUpdate1 = createRate(2L, null, null, null, 5.1);
+        Rate rateUpdate2 = createRate(3L, null, null, null, 5.1);
         List<Rate> ratesUpdate = Arrays.asList(rateUpdate1, rateUpdate2);
         List<Long> idList = ratesUpdate.stream().map(Rate::getId).collect(Collectors.toList());
         when(rateRepository.getListOfRatesByIds(idList)).thenReturn(ratesFromDb);
@@ -243,9 +223,7 @@ class RateServiceImplTest {
     @Test
     void shouldThrowExceptionWhenRatesNotFound() {
         //given
-        Rate updateRate = new Rate();
-        updateRate.setId(1L);
-        updateRate.setRateValue(2.1);
+        Rate updateRate = createRate(1L, null, null, null, 2.1);
         List<Rate> updatedRates = Collections.singletonList(updateRate);
         List<Rate> ratesFromDb = new ArrayList<>();
         List<Long> idList = updatedRates.stream().map(Rate::getId).collect(Collectors.toList());
@@ -262,8 +240,8 @@ class RateServiceImplTest {
     @Test
     void shouldThrowExceptionCurrencyFromNotFound() {
         //given
-        Currency currencyFrom = createCurrency(1L, "RUB");
-        Rate newRate = createRate(2L, currencyFrom, null);
+        Currency currencyFrom = createCurrency(1L, "RUB", null, 2);
+        Rate newRate = createRate(2L, currencyFrom, null, null, 2.1);
         String errorMessage = "currencyFrom with id: " + newRate.getCurrencyFrom().getId() + " not exist";
         //when
         NotFoundException result = Assertions
@@ -276,9 +254,9 @@ class RateServiceImplTest {
     @Test
     void shouldThrowExceptionCurrencyToNotFound() {
         //given
-        Currency currencyFrom = createCurrency(1L, "RUB");
-        Currency currencyTo = createCurrency(2L, "EUR");
-        Rate newRate = createRate(2L, currencyFrom, currencyTo);
+        Currency currencyFrom = createCurrency(1L, "RUB", null, 2);
+        Currency currencyTo = createCurrency(2L, "EUR", null, 3);
+        Rate newRate = createRate(2L, currencyFrom, currencyTo, null, 2.1);
         String errorMessage = "currencyTo with id: " + newRate.getCurrencyTo().getId() + " not exist";
         when(currencyRepository.findById(currencyFrom.getId())).thenReturn(Optional.of(currencyFrom));
         //when
@@ -292,9 +270,9 @@ class RateServiceImplTest {
     @Test
     void shouldThrowExceptionSuchRateExist() {
         //given
-        Currency currencyFrom = createCurrency(1L, "RUB");
-        Currency currencyTo = createCurrency(2L, "EUR");
-        Rate newRate = createRate(2L, currencyFrom, currencyTo);
+        Currency currencyFrom = createCurrency(1L, "RUB", null, 2);
+        Currency currencyTo = createCurrency(2L, "EUR", null, 3);
+        Rate newRate = createRate(2L, currencyFrom, currencyTo, null, 2.1);
         String errorMessage = "such rate is already exist";
         when(currencyRepository.findById(currencyFrom.getId())).thenReturn(Optional.of(currencyFrom));
         when(currencyRepository.findById(currencyTo.getId())).thenReturn(Optional.of(currencyTo));
@@ -314,9 +292,9 @@ class RateServiceImplTest {
     @Test
     void shouldThrowExceptionNotComparableCurrency() {
         //given
-        Currency currencyFrom = createCurrency(1L, "BYN");
-        Currency currencyTo = createCurrency(2L, "EUR");
-        Rate newRate = createRate(2L, currencyFrom, currencyTo);
+        Currency currencyFrom = createCurrency(1L, "BYN", null, 2);
+        Currency currencyTo = createCurrency(2L, "EUR", null, 3);
+        Rate newRate = createRate(2L, currencyFrom, currencyTo, null, 2.1);
         String errorMessage = "'BYN' - not comparable type of currency";
         when(currencyRepository.findById(currencyFrom.getId())).thenReturn(Optional.of(currencyFrom));
         when(currencyRepository.findById(currencyTo.getId())).thenReturn(Optional.of(currencyTo));
@@ -334,9 +312,9 @@ class RateServiceImplTest {
     @Test
     void shouldCreateConversionRate() {
         //given
-        Currency currencyFrom = createCurrency(1L, "USD");
-        Currency currencyTo = createCurrency(2L, "EUR");
-        Rate newRate = createRate(2L, currencyFrom, currencyTo);
+        Currency currencyFrom = createCurrency(1L, "USD", null, 2);
+        Currency currencyTo = createCurrency(2L, "EUR", null, 3);
+        Rate newRate = createRate(2L, currencyFrom, currencyTo, null, 2.1);
         RateDto rateDto = new RateDto();
         when(currencyRepository.findById(currencyFrom.getId())).thenReturn(Optional.of(currencyFrom));
         when(currencyRepository.findById(currencyTo.getId())).thenReturn(Optional.of(currencyTo));

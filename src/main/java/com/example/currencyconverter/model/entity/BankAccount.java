@@ -12,10 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Set;
 
-@Table(name = "bankAccount")
+@Table(name = "bank_account")
 @RequiredArgsConstructor
 @Setter
 @Getter
@@ -27,8 +28,6 @@ public class BankAccount {
     private Long id;
     @Column(name = "user_id")
     private int user_id;
-    @Column(name = "currency_title")
-    private String currencyTitle;
     @Column(name = "value")
     private Integer currencyValue;
 
@@ -38,4 +37,8 @@ public class BankAccount {
 
     @OneToMany(mappedBy = "bankAccount")
     private Set<Transaction> transactions;
+
+    @OneToOne
+    @JoinColumn(name = "currency_id")
+    private Currency currency;
 }

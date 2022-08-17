@@ -6,6 +6,7 @@ import com.example.currencyconverter.mapper.CurrencyMapper;
 import com.example.currencyconverter.model.dto.CurrencyDto;
 import com.example.currencyconverter.model.entity.Currency;
 import com.example.currencyconverter.model.entity.Rate;
+import com.example.currencyconverter.model.entity.enums.RateType;
 import com.example.currencyconverter.repository.CurrencyRepository;
 import com.example.currencyconverter.service.CurrencyService;
 import org.slf4j.Logger;
@@ -20,11 +21,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class CurrencyServiceImpl implements CurrencyService {
-
     private static final Logger log = LoggerFactory.getLogger(CurrencyServiceImpl.class);
     private final CurrencyRepository currencyRepository;
     private final CurrencyMapper currencyMapper;
-
 
     @Autowired
     public CurrencyServiceImpl(
@@ -62,12 +61,17 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public Double convertFromTo(String titleFrom, Integer quantityFrom, String titleTo) {
+        Double result = 0.00;
         Rate rateByTitle = currencyRepository.findRateByTitle(titleFrom, titleTo);
         if (rateByTitle == null) {
             throw new NotFoundException("No such rate " + titleFrom + "/" + titleTo + " exist!");
         } else if (rateByTitle.getRateValue() == null) {
             throw new WrongAmountException("Such rate " + titleFrom + "/" + titleTo + " is Unavailable");
+        } else if (RateType.SELLING_RATE.equals(rateByTitle.getRateType())) {
+            result = quantityFrom / rateByTitle.getRateValue() * rateByTitle.getCurrencyTo().getQuantity();
+        } else if (RateType.BUYING_RATE.equals(rateByTitle.getRateType())) {
+            result = quantityFrom * rateByTitle.getRateValue() / rateByTitle.getCurrencyTo().getQuantity();
         }
-        return quantityFrom * rateByTitle.getRateValue();
+        return result;
     }
 }
