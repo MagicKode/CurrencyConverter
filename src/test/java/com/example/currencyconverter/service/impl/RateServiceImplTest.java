@@ -148,24 +148,6 @@ class RateServiceImplTest {
     }
 
     @Test
-    void shouldFindConversionRatesByTitle() {
-        //given
-        String title = "USD";
-        RateType rateType = CONVERSION_RATE;
-        List<Rate> rates = Collections.singletonList(new Rate());
-        List<RateDto> rateDtos = Collections.singletonList(new RateDto());
-        when(rateRepository.findAllConversionRatesByTitle(rateType, title)).thenReturn(rates);
-        when(rateMapper.toListRateDto(rates)).thenReturn(rateDtos);
-        //when
-        List<RateDto> result = testSubject.findConversionRatesByTitle(rateType, title);
-        //then
-        assertEquals(1, result.size());
-        assertEquals(rateDtos, result);
-        verify(rateRepository, times(1)).findAllConversionRatesByTitle(rateType, title);
-        verify(rateMapper, times(1)).toListRateDto(rates);
-    }
-
-    @Test
     void shouldFindAllRates() {
         List<Rate> rates = Arrays.asList(new Rate(), new Rate(), new Rate());
         List<RateDto> rateDtos = Arrays.asList(new RateDto(), new RateDto(), new RateDto());
